@@ -1,9 +1,71 @@
+/* General. */
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+body {
+  background: gray;
+  color: white;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+img {
+  width: 500px;
+}
+
+/* Layout. */
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+.row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+/* Page content. */
+
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
 }
 
 #greeting-container {
   margin-top: 20px;
+}
+
+.text-content {
+  width: 500px;
+}
+
+/* Header. */
+
+.mainnav {
+  font-size: 160px;
+  padding-top: 30px;
+  writing-mode: vertical-lr;
+}
+
+.outline {
+  color: gray;
+  /* Making the shadow less transparent requires repetition. */
+  text-shadow: white 0px 0px 2px, white 0px 0px 2px, white 0px 0px 2px, 
+  white 0px 0px 2px, white 0px 0px 2px, white 0px 0px 2px, white 0px 0px 2px,
+  white 0px 0px 2px, white 0px 0px 2px, white 0px 0px 2px, white 0px 0px 2px, 
+  white 0px 0px 2px, white 0px 0px 2px, white 0px 0px 2px, white 0px 0px 2px, 
+  white 0px 0px 2px, white 0px 0px 2px, white 0px 0px 2px, white 0px 0px 2px, 
+  white 0px 0px 2px, white 0px 0px 1px, white 0px 0px 1px, white 0px 0px 1px, 
+  white 0px 0px 1px, white 0px 0px 1px, white 0px 0px 1px, white 0px 0px 1px, 
+  white 0px 0px 1px, white 0px 0px 1px, white 0px 0px 1px, white 0px 0px 1px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.socialnav {
+  float: right;
+  padding: 30px;
 }
