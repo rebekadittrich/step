@@ -47,7 +47,9 @@ public class DataServlet extends HttpServlet {
 
     /* Get the input from the form. */
     String greeting = request.getParameter("text-input");
-    greetings.add(greeting);
+    if (greeting != null) {
+      greetings.add(greeting);
+    }
     response.sendRedirect("/index.html");
   }
 
