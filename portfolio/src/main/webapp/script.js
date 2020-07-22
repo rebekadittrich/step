@@ -27,9 +27,13 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-/* Add greeting to the page. */
-async function getGreetingUsingAsyncAwait() {
-  const response = await fetch('/data');
-  const greeting = await response.text();
-  document.getElementById('greeting-container').innerText = greeting;
+/* Add all fetched greetings to the page. */
+function getGreetings() {
+  fetch('/data').then(response => response.json())
+  .then(greeting => greeting.forEach(addGreeting));
+}
+
+/* Add value of greeting field to the page. */
+function addGreeting(greeting) {
+  document.getElementById('greeting-container').innerText += greeting.greeting + "\n";
 }
