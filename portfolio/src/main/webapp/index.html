@@ -29,6 +29,13 @@
           </div>
           <br>
           <h1>Click here to see the greetings:</h1>
+          <form action="/data" method="POST">
+            <p>Enter a greeting:</p>
+            <textarea name="text-input">Hello World!</textarea>
+            <br/><br/>
+            <input type="submit"/>
+          </form>
+          <br>
           <button onclick="getGreetings()">Fetch the greetings!</button>
           <div id="greeting-container"></div>
         </div>

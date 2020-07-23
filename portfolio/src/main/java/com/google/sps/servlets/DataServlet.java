@@ -42,6 +42,17 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(convertGreetingsToJson());
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    /* Get the input from the form. */
+    String greeting = request.getParameter("text-input");
+    if (greeting != null) {
+      greetings.add(greeting);
+    }
+    response.sendRedirect("/index.html");
+  }
+
   /* Convert greetings ArrayList into Json. */
   private String convertGreetingsToJson() {
     
