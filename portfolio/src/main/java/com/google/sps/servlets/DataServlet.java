@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,20 +32,21 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private List<String> greetings;
-
-  @Override
-  public void init() {
-    greetings = new ArrayList<>();
-    greetings.add("Hello world!");
-    greetings.add("Hallo Welt!");
-    greetings.add("Bonjour le monde!");
-  }
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Query query = new Query("Greeting");
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    List<String> greetings = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+      String greeting = (String) entity.getProperty("greeting");
+      greetings.add(greeting);
+    }
+    
     response.setContentType("text/html;");
-    response.getWriter().println(convertGreetingsToJson());
+    response.getWriter().println(convertGreetingsToJson(greetings));
   }
 
   @Override
@@ -48,13 +55,17 @@ public class DataServlet extends HttpServlet {
     /* Get the input from the form. */
     String greeting = request.getParameter("text-input");
     if (greeting != null) {
-      greetings.add(greeting);
+      Entity greetingEntity = new Entity("Greeting");
+      greetingEntity.setProperty("greeting", greeting);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(greetingEntity);
     }
     response.sendRedirect("/index.html");
   }
 
   /* Convert greetings ArrayList into Json. */
-  private String convertGreetingsToJson() {
+  private String convertGreetingsToJson(List<String> greetings) {
     
     int length = greetings.size();
 
