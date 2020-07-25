@@ -29,6 +29,7 @@ function addRandomGreeting() {
 
 /* Add all fetched greetings to the page. */
 function getGreetings() {
+  document.getElementById('greeting-container').innerText = "";
   fetch('/data').then(response => response.json())
   .then(greeting => greeting.forEach(addGreeting));
 }
