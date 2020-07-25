@@ -36,5 +36,6 @@ function getGreetings() {
 
 /* Add value of greeting field to the page. */
 function addGreeting(greeting) {
-  document.getElementById('greeting-container').innerText += greeting.greeting + "\n";
+  const safeGreeting = greeting.greeting.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  document.getElementById('greeting-container').innerText += safeGreeting + "\n";
 }
