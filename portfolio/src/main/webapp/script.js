@@ -29,11 +29,13 @@ function addRandomGreeting() {
 
 /* Add all fetched greetings to the page. */
 function getGreetings() {
+  document.getElementById('greeting-container').innerText = "";
   fetch('/data').then(response => response.json())
   .then(greeting => greeting.forEach(addGreeting));
 }
 
 /* Add value of greeting field to the page. */
 function addGreeting(greeting) {
-  document.getElementById('greeting-container').innerText += greeting.greeting + "\n";
+  const safeGreeting = greeting.greeting.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  document.getElementById('greeting-container').innerText += safeGreeting + "\n";
 }
