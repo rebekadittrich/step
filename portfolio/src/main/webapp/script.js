@@ -27,6 +27,10 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
+function deleteGreetings() {
+  fetch('/data', {method: 'DELETE'});
+}
+
 /* Add greetings with translation. */
 function getGreetingsInLanguage() { 
   var language = document.getElementById('languages').value;
