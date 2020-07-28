@@ -60,7 +60,7 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");
 
-      String language = request.getParameter("languages");
+      String language = request.getParameter("language");
 
       if (language != null && !language.equals("original")) {
         Translate translate = TranslateOptions.getDefaultInstance().getService();

@@ -19,7 +19,7 @@ function deleteComments() {
 
 /* Add comments with translation. */
 function getCommentsInLanguage() { 
-  var language = document.getElementById('languages').value;
+  var language = document.getElementById('language').value;
   getComments(language);
 }
 
@@ -27,7 +27,7 @@ function getCommentsInLanguage() {
 function getComments(language) {
   document.getElementById('comment-container').innerText = "";
   fetch('/data?' + new URLSearchParams({
-    languages: language,
+    language: language,
 })).then(response => response.json()).then(comments => comments.forEach(addComment));
 }
 
