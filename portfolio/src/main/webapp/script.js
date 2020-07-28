@@ -12,44 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
-function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
-
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
-}
-
-/* Remove all greetings. */
-function deleteGreetings() {
+/* Remove all comments. */
+function deleteComments() {
   fetch('/data', {method: 'DELETE'});
 }
 
-/* Add greetings with translation. */
-function getGreetingsInLanguage() { 
+/* Add comments with translation. */
+function getCommentsInLanguage() { 
   var language = document.getElementById('languages').value;
-  getGreetings(language);
+  getComments(language);
 }
 
-/* Add all fetched greetings to the page. */
-function getGreetings(language) {
-  document.getElementById('greeting-container').innerText = "";
+/* Add all fetched comments to the page. */
+function getComments(language) {
+  document.getElementById('comment-container').innerText = "";
   fetch('/data?' + new URLSearchParams({
     languages: language,
-})).then(response => response.json()).then(greeting => greeting.forEach(addGreeting));
+})).then(response => response.json()).then(comment => comment.forEach(addComment));
 }
 
-/* Add value of greeting field to the page. */
-function addGreeting(greeting) {
-  const safeGreeting = safeEncoding(greeting.greeting);
-  document.getElementById('greeting-container').innerText += safeGreeting + "\n";
+/* Add value of comment field to the page. */
+function addComment(comment) {
+  const safeComment = safeEncoding(comment.comment);
+  document.getElementById('comment-container').innerText += safeComment + "\n";
 }
 
 /* Replace symbols in text for safety. */

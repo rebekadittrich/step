@@ -28,15 +28,15 @@
               I'm currently studying Computing with focus on AI and Machine Learning.</p>
           </div>
           <br>
-          <h1>Click here to see the greetings:</h1>
+          <h1>Click here to see the comments:</h1>
           <form action="/data" method="POST">
-            <p>Enter a greeting:</p>
+            <p>Enter a comment:</p>
             <textarea name="text-input">Hello World!</textarea>
             <br/><br/>
             <input type="submit"/>
           </form>
           <br>
-          <button type="button" onclick="deleteGreetings()">Delete the greetings!</button>
+          <button type="button" onclick="deleteComments()">Delete the comments!</button>
           <br><br>
           <form>
             <label for="languages">Choose a language:</label>
@@ -47,9 +47,9 @@
                 <option value="zh">Chinese</option>
             </select>
             <br><br>
-            <button type="button" onclick="getGreetingsInLanguage()">Fetch the greetings!</button>
+            <button type="button" onclick="getCommentsInLanguage()">Fetch the comments!</button>
           </form>
-          <div id="greeting-container"></div>
+          <div id="comment-container"></div>
         </div>
       </div>
     </div>

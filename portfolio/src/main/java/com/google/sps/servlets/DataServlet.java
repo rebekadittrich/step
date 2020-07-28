@@ -39,7 +39,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Greeting");
+    Query query = new Query("Comment");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -51,55 +51,55 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query("Greeting");
+    Query query = new Query("Comment");
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<String> greetings = new ArrayList<>();
+    List<String> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      String greeting = (String) entity.getProperty("greeting");
+      String comment = (String) entity.getProperty("comment");
 
       String language = request.getParameter("languages");
 
       if (language != null && !language.equals("original")) {
         Translate translate = TranslateOptions.getDefaultInstance().getService();
-        Translation translation = translate.translate(greeting, Translate.TranslateOption.targetLanguage(language));
-        greeting = translation.getTranslatedText();
+        Translation translation = translate.translate(comment, Translate.TranslateOption.targetLanguage(language));
+        comment = translation.getTranslatedText();
       }
 
-      greetings.add(greeting);
+      comments.add(comment);
     }
     
     response.setContentType("text/html");
-    response.getWriter().println(convertGreetingsToJson(greetings));
+    response.getWriter().println(convertCommentsToJson(comments));
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     /* Get the input from the form. */
-    String greeting = request.getParameter("text-input");
-    if (greeting != null) {
-      Entity greetingEntity = new Entity("Greeting");
-      greetingEntity.setProperty("greeting", greeting);
+    String comment = request.getParameter("text-input");
+    if (comment != null) {
+      Entity commentEntity = new Entity("Comment");
+      commentEntity.setProperty("comment", comment);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-      datastore.put(greetingEntity);
+      datastore.put(commentEntity);
     }
     
     response.sendRedirect("/index.html");
   }
 
-  /* Convert greetings ArrayList into Json. */
-  private String convertGreetingsToJson(List<String> greetings) {
+  /* Convert comments ArrayList into Json. */
+  private String convertCommentsToJson(List<String> comments) {
     
-    int length = greetings.size();
+    int length = comments.size();
 
     String json = "[";
     for (int i = 0; i < length; i++) {
-      json += "{\"greeting\":\"";
-      json += greetings.get(i);
+      json += "{\"comment\":\"";
+      json += comments.get(i);
       json += "\"}";
       if (i < length - 1) {
         json += ",";
