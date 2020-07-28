@@ -56,14 +56,14 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    String language = request.getParameter("language");
+    Boolean isNotOriginal = language != null && !language.equals("original");
+    Translate translate = TranslateOptions.getDefaultInstance().getService();
+
     List<String> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");
-
-      String language = request.getParameter("language");
-
-      if (language != null && !language.equals("original")) {
-        Translate translate = TranslateOptions.getDefaultInstance().getService();
+      if (isNotOriginal) {
         Translation translation = translate.translate(comment, Translate.TranslateOption.targetLanguage(language));
         comment = translation.getTranslatedText();
       }
