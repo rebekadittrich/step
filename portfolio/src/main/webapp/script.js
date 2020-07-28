@@ -27,6 +27,7 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
+/* Remove all greetings. */
 function deleteGreetings() {
   fetch('/data', {method: 'DELETE'});
 }
