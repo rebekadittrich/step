@@ -27,11 +27,18 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
+/* Add greetings with translation. */
+function getGreetingsInLanguage() { 
+  var language = document.getElementById('languages').value;
+  getGreetings(language);
+}
+
 /* Add all fetched greetings to the page. */
-function getGreetings() {
+function getGreetings(language) {
   document.getElementById('greeting-container').innerText = "";
-  fetch('/data').then(response => response.json())
-  .then(greeting => greeting.forEach(addGreeting));
+  fetch('/data?' + new URLSearchParams({
+    languages: language,
+})).then(response => response.json()).then(greeting => greeting.forEach(addGreeting));
 }
 
 /* Add value of greeting field to the page. */

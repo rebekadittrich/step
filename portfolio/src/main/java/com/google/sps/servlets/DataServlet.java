@@ -19,6 +19,9 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /** Servlet that returns some example content. */
 @WebServlet("/data")
@@ -41,10 +45,19 @@ public class DataServlet extends HttpServlet {
     List<String> greetings = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       String greeting = (String) entity.getProperty("greeting");
+
+      String language = request.getParameter("languages");
+
+      if (language != null && !language.equals("original")) {
+        Translate translate = TranslateOptions.getDefaultInstance().getService();
+        Translation translation = translate.translate(greeting, Translate.TranslateOption.targetLanguage(language));
+        greeting = translation.getTranslatedText();
+      }
+
       greetings.add(greeting);
     }
     
-    response.setContentType("text/html;");
+    response.setContentType("text/html");
     response.getWriter().println(convertGreetingsToJson(greetings));
   }
 
@@ -60,6 +73,7 @@ public class DataServlet extends HttpServlet {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(greetingEntity);
     }
+    
     response.sendRedirect("/index.html");
   }
 

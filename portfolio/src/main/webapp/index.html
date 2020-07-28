@@ -39,7 +39,18 @@
           <form action="/delete-data" method="POST">
             <input type="submit" value="Delete the greetings!"/>
           </form>
-          <button onclick="getGreetings()">Fetch the greetings!</button>
+          <br>
+          <form>
+            <label for="languages">Choose a language:</label>
+            <select name="languages" id="languages">
+                <option value="original">Original</option>
+                <option value="en">English</option>
+                <option value="hu">Hungarian</option>
+                <option value="zh">Chinese</option>
+            </select>
+            <br><br>
+            <button type="button" onclick="getGreetingsInLanguage()">Fetch the greetings!</button>
+          </form>
           <div id="greeting-container"></div>
         </div>
       </div>
