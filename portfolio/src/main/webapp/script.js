@@ -28,7 +28,7 @@ function getComments(language) {
   document.getElementById('comment-container').innerText = "";
   fetch('/data?' + new URLSearchParams({
     languages: language,
-})).then(response => response.json()).then(comment => comment.forEach(addComment));
+})).then(response => response.json()).then(comments => comments.forEach(addComment));
 }
 
 /* Add value of comment field to the page. */
