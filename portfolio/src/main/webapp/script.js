@@ -48,6 +48,11 @@ function getGreetings(language) {
 
 /* Add value of greeting field to the page. */
 function addGreeting(greeting) {
-  const safeGreeting = greeting.greeting.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const safeGreeting = safeEncoding(greeting.greeting);
   document.getElementById('greeting-container').innerText += safeGreeting + "\n";
+}
+
+/* Replace symbols in text for safety. */
+function safeEncoding(text) {
+  return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
