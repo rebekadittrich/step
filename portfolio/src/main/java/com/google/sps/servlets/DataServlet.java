@@ -71,7 +71,7 @@ public class DataServlet extends HttpServlet {
       comments.add(comment);
     }
     
-    response.setContentType("text/html");
+    response.setContentType("application/json");
     response.getWriter().println(convertCommentsToJson(comments));
   }
 
