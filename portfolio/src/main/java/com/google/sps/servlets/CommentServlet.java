@@ -22,6 +22,8 @@ import com.google.appengine.api.datastore.Query;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
+import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. */
 @WebServlet("/data")
-public class DataServlet extends HttpServlet {
+public class CommentServlet extends HttpServlet {
 
   final int SC_NO_CONTENT = 204;
 
@@ -57,21 +59,28 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    List<String> comments = new ArrayList<>();
+    String language = request.getParameter("language");
+    Boolean isNotOriginal = language != null && !language.equals("original");
+
+    Translate translate = TranslateOptions.getDefaultInstance().getService();
+
+    List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      String comment = (String) entity.getProperty("comment");
+      String text = (String) entity.getProperty("comment");
+
+      if (isNotOriginal) {
+        Translation translation = translate.translate(text, Translate.TranslateOption.targetLanguage(language));
+        text = translation.getTranslatedText();
+      }
+
+      Comment comment = new Comment(text);
       comments.add(comment);
     }
 
-    String language = request.getParameter("language");
-    if (language != null && !language.equals("original")) {
-      Translate translate = TranslateOptions.getDefaultInstance().getService();
-      List<Translation> translations = translate.translate(comments, Translate.TranslateOption.targetLanguage(language));
-      comments = translations.stream().map(t -> t.getTranslatedText()).collect(Collectors.toList());
-    }
+    Gson gson = new Gson();
     
     response.setContentType("application/json");
-    response.getWriter().println(convertCommentsToJson(comments));
+    response.getWriter().println(gson.toJson(comments));
   }
 
   @Override
@@ -88,23 +97,5 @@ public class DataServlet extends HttpServlet {
     }
     
     response.sendRedirect("/index.html");
-  }
-
-  /* Convert comments ArrayList into Json. */
-  private String convertCommentsToJson(List<String> comments) {
-    
-    int length = comments.size();
-
-    String json = "[";
-    for (int i = 0; i < length; i++) {
-      json += "{\"comment\":\"";
-      json += comments.get(i);
-      json += "\"}";
-      if (i < length - 1) {
-        json += ",";
-      }
-    }
-    json += "]";
-    return json;
   }
 }
