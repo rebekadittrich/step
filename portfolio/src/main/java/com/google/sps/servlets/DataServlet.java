@@ -25,6 +25,7 @@ import com.google.cloud.translate.Translation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -56,19 +57,17 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    String language = request.getParameter("language");
-    Boolean isNotOriginal = language != null && !language.equals("original");
-    Translate translate = TranslateOptions.getDefaultInstance().getService();
-
     List<String> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
       String comment = (String) entity.getProperty("comment");
-      if (isNotOriginal) {
-        Translation translation = translate.translate(comment, Translate.TranslateOption.targetLanguage(language));
-        comment = translation.getTranslatedText();
-      }
-
       comments.add(comment);
+    }
+
+    String language = request.getParameter("language");
+    if (language != null && !language.equals("original")) {
+      Translate translate = TranslateOptions.getDefaultInstance().getService();
+      List<Translation> translations = translate.translate(comments, Translate.TranslateOption.targetLanguage(language));
+      comments = translations.stream().map(t -> t.getTranslatedText()).collect(Collectors.toList());
     }
     
     response.setContentType("application/json");
