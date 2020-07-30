@@ -89,6 +89,7 @@ public class CommentServlet extends HttpServlet {
     String comment = request.getParameter("text-input");
     if (comment != null) {
       Entity commentEntity = new Entity("Comment");
+      comment.replaceAll("(?i)<(/?script[^>]*)>", "&lt;$1&gt;");
       commentEntity.setProperty("comment", comment);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
