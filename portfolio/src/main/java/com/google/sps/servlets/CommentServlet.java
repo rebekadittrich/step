@@ -33,9 +33,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-/** Servlet that returns some example content. */
-@WebServlet("/data")
+/** Servlet to manage comments. */
+@WebServlet("/comment")
 public class CommentServlet extends HttpServlet {
 
   final int SC_NO_CONTENT = 204;

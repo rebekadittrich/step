@@ -14,7 +14,7 @@
 
 /* Remove all comments. */
 function deleteComments() {
-  fetch('/data', {method: 'DELETE'});
+  fetch('/comment', {method: 'DELETE'});
 }
 
 /* Add comments with translation. */
@@ -26,7 +26,7 @@ function getCommentsInLanguage() {
 /* Add all fetched comments to the page. */
 function getComments(language) {
   document.getElementById('comment-container').innerText = "";
-  fetch('/data?' + new URLSearchParams({
+  fetch('/comment?' + new URLSearchParams({
     language: language,
 })).then(response => response.json()).then(comments => comments.forEach(addComment));
 }
