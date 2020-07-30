@@ -28,19 +28,28 @@
               I'm currently studying Computing with focus on AI and Machine Learning.</p>
           </div>
           <br>
-          <h1>Click here to see the greetings:</h1>
-          <form action="/data" method="POST">
-            <p>Enter a greeting:</p>
+          <h1>Click here to see the comments:</h1>
+          <form action="/comment" method="POST">
+            <p>Enter a comment:</p>
             <textarea name="text-input">Hello World!</textarea>
             <br/><br/>
             <input type="submit"/>
           </form>
           <br>
-          <form action="/delete-data" method="POST">
-            <input type="submit" value="Delete the greetings!"/>
+          <button type="button" onclick="deleteComments()">Delete the comments!</button>
+          <br><br>
+          <form>
+            <label for="languages">Choose a language:</label>
+            <select name="languages" id="language">
+                <option value="original">Original</option>
+                <option value="en">English</option>
+                <option value="hu">Hungarian</option>
+                <option value="zh">Chinese</option>
+            </select>
+            <br><br>
+            <button type="button" onclick="getCommentsInLanguage()">Fetch the comments!</button>
           </form>
-          <button onclick="getGreetings()">Fetch the greetings!</button>
-          <div id="greeting-container"></div>
+          <div id="comment-container"></div>
         </div>
       </div>
     </div>
