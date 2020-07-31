@@ -34,7 +34,7 @@ function getComments(language) {
 /* Add value and image of comment fields to the page. */
 function addComment(comment) {
   const safeComment = safeEncoding(comment.comment);
-  document.getElementById('comment-container').innerHTML += "<p>" + safeComment + "</p><br>";
+  document.getElementById('comment-container').innerHTML += "<hr><p>" + safeComment + "</p><br>";
   if (comment.imageUrl != null) {
     document.getElementById('comment-container').innerHTML += "<a href=\"" + comment.imageUrl + "\"><img src=\"" + comment.imageUrl + "\" /></a><br><br>";
   }
