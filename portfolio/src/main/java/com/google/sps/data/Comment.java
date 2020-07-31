@@ -17,8 +17,10 @@ package com.google.sps.data;
 public final class Comment {
 
   private final String comment;
+  private final String imageUrl;
 
-  public Comment(String comment) {
+  public Comment(String comment, String imageUrl) {
     this.comment = comment;
+    this.imageUrl = imageUrl;
   }
 }
