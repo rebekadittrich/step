@@ -35,7 +35,9 @@ function getComments(language) {
 function addComment(comment) {
   const safeComment = safeEncoding(comment.comment);
   document.getElementById('comment-container').innerHTML += "<p>" + safeComment + "</p><br>";
-  document.getElementById('comment-container').innerHTML += "<a href=\"" + comment.imageUrl + "\"><img src=\"" + comment.imageUrl + "\" /></a><br><br>";
+  if (comment.imageUrl != null) {
+    document.getElementById('comment-container').innerHTML += "<a href=\"" + comment.imageUrl + "\"><img src=\"" + comment.imageUrl + "\" /></a><br><br>";
+  }
 }
 
 /* Replace symbols in text for safety. */
