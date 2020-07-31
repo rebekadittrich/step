@@ -31,10 +31,15 @@ function getComments(language) {
 })).then(response => response.json()).then(comments => comments.forEach(addComment));
 }
 
-/* Add value and image of comment fields to the page. */
+/* Add name, text, and image of comment fields to the page. */
 function addComment(comment) {
   const safeComment = safeEncoding(comment.comment);
-  document.getElementById('comment-container').innerHTML += "<hr><p>" + safeComment + "</p><br>";
+  var safeName = "Anonymous";
+  if (comment.name != null) {
+    safeName = safeEncoding(comment.name);
+  }
+  document.getElementById('comment-container').innerHTML += "<hr><h2>" + safeName + " said:</h2>";
+  document.getElementById('comment-container').innerHTML += "<p>" + safeComment + "</p><br>";
   if (comment.imageUrl != null) {
     document.getElementById('comment-container').innerHTML += "<a href=\"" + comment.imageUrl + "\"><img src=\"" + comment.imageUrl + "\" /></a><br><br>";
   }

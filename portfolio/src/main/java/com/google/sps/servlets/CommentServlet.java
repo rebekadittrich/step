@@ -77,6 +77,7 @@ public class CommentServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
+      String name = (String) entity.getProperty("name");
       String text = (String) entity.getProperty("comment");
       String imageUrl = (String) entity.getProperty("imageUrl");
 
@@ -85,7 +86,7 @@ public class CommentServlet extends HttpServlet {
         text = translation.getTranslatedText();
       }
 
-      Comment comment = new Comment(text, imageUrl);
+      Comment comment = new Comment(name, text, imageUrl);
       comments.add(comment);
     }
 
@@ -99,13 +100,14 @@ public class CommentServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
     /* Get the input from the form. */
+    String name = request.getParameter("name-input");
     String comment = request.getParameter("text-input");
     String imageUrl = getUploadedFileUrl(request, "image");
 
     if (comment != null) {
       Entity commentEntity = new Entity("Comment");
-      comment.replaceAll("(?i)<(/?script[^>]*)>", "&lt;$1&gt;");
-      commentEntity.setProperty("comment", comment);
+      commentEntity.setProperty("name", safeServerEncoding(name));
+      commentEntity.setProperty("comment", safeServerEncoding(comment));
       commentEntity.setProperty("imageUrl", imageUrl);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -113,6 +115,11 @@ public class CommentServlet extends HttpServlet {
     }
     
     response.sendRedirect("/index.html");
+  }
+
+  /* Replace script tags. */
+  private String safeServerEncoding(String text) {
+    return text.replaceAll("(?i)<(/?script[^>]*)>", "&lt;$1&gt;");
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
