@@ -30,6 +30,7 @@ import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
+import com.google.common.html.HtmlEscapers;
 import com.google.gson.Gson;
 import com.google.sps.data.Comment;
 import java.io.IOException;
@@ -119,7 +120,7 @@ public class CommentServlet extends HttpServlet {
 
   /* Replace script tags. */
   private String safeServerEncoding(String text) {
-    return text.replaceAll("(?i)<(/?script[^>]*)>", "&lt;$1&gt;");
+    return HtmlEscapers.htmlEscaper().escape(text);
   }
 
   /* Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */
