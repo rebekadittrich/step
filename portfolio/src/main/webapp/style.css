@@ -28,6 +28,10 @@ img {
   width: 50%;
 }
 
+.hidden {
+  display: none;
+}
+
 .row:after {
   clear: both;
   content: "";
