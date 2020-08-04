@@ -11,6 +11,12 @@ body {
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
+hr {
+  margin-left: 0;
+  text-align: left;
+  width: 500px;
+}
+
 img {
   width: 500px;
 }
@@ -20,6 +26,10 @@ img {
 .column {
   float: left;
   width: 50%;
+}
+
+.hidden {
+  display: none;
 }
 
 .row:after {

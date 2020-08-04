@@ -31,13 +31,34 @@ function getComments(language) {
 })).then(response => response.json()).then(comments => comments.forEach(addComment));
 }
 
-/* Add value of comment field to the page. */
+/* Add name, text, and image of comment fields to the page. */
 function addComment(comment) {
   const safeComment = safeEncoding(comment.comment);
-  document.getElementById('comment-container').innerText += safeComment + "\n";
+  var safeName = "Anonymous";
+  if (comment.name != null) {
+    safeName = safeEncoding(comment.name);
+  }
+  document.getElementById('comment-container').innerHTML += "<hr><h2>" + safeName + " said:</h2>";
+  document.getElementById('comment-container').innerHTML += "<p>" + safeComment + "</p><br>";
+  if (comment.imageUrl != null) {
+    document.getElementById('comment-container').innerHTML += "<a href=\"" + comment.imageUrl + "\"><img src=\"" + comment.imageUrl + "\" /></a><br><br>";
+  }
 }
 
 /* Replace symbols in text for safety. */
 function safeEncoding(text) {
   return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/* Fetch Blobstore URL. */
+function fetchBlobstoreUrl() {
+  fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        const messageForm = document.getElementById('my-form');
+        messageForm.action = imageUploadUrl;
+        messageForm.classList.remove('hidden');
+      });
 }
