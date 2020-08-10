@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -223,7 +222,7 @@ public final class FindMeetingQueryTest {
     //
     // Events  : |-----A-------||------B-------|
     // Day     : |-----------------------------|
-    // Options : |--1--|     |--2--|     |--3--|
+    // Options : |-------------1---------------|
 
     Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartDuration(TIME_1200AM, DURATION_HALF_DAY),
