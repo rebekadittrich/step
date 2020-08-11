@@ -68,28 +68,23 @@ public final class FindMeetingQuery {
     Collection<TimeRange> sortedTimes = times.stream().sorted(TimeRange.ORDER_BY_START).collect(Collectors.toList());
     Collection<TimeRange> freeTimes = new LinkedList<>();
 
-    TimeRange previousTime = TimeRange.WHOLE_DAY;
+    int previousTime = TimeRange.START_OF_DAY;
 
     if (sortedTimes.isEmpty()) {
       return Arrays.asList(TimeRange.WHOLE_DAY);
     }
 
     for (TimeRange currentTime : sortedTimes) {
-      if (previousTime.equals(TimeRange.WHOLE_DAY)) {
-        freeTimes.add(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, currentTime.start(), false));
-        previousTime = currentTime;
-      } else {
-        if (!previousTime.contains(currentTime)) {
-          if (!previousTime.overlaps(currentTime)) {
-            freeTimes.add(TimeRange.fromStartEnd(previousTime.end(), currentTime.start(), false));
-          }
-          previousTime = currentTime;
+      if (previousTime < currentTime.end()) {
+        if (previousTime < currentTime.start()) {
+          freeTimes.add(TimeRange.fromStartEnd(previousTime, currentTime.start(), false));
         }
+        previousTime = currentTime.end();
       }
     }
 
-    if (previousTime.end() < TimeRange.END_OF_DAY) {
-      freeTimes.add(TimeRange.fromStartEnd(previousTime.end(), TimeRange.END_OF_DAY, true));
+    if (previousTime < TimeRange.END_OF_DAY) {
+      freeTimes.add(TimeRange.fromStartEnd(previousTime, TimeRange.END_OF_DAY, true));
     }
     
     return freeTimes;
